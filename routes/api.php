@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\ApiController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/info', [ApiController::class, 'info']);
+Route::get('/info-dashboard', [DashboardController::class, 'index']);
