@@ -71,7 +71,7 @@ class DashboardController extends Controller
                 'tweb_penduduk.nama as nama_penduduk',
                 'permohonan_surat.created_at AS tgl_terdaftar'
             )
-            ->orderBy('permohonan_surat.id');
+            ->orderBy('permohonan_surat.created_at','desc');
             return DataTables::eloquent($daftarPermohonanSurat)->toJson();
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
