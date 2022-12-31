@@ -40,12 +40,12 @@ class DashboardController extends Controller
                 'surattercetakharini'   => LogSurat::where('tanggal',Carbon::now())->count(),
                 'ibuhamil'              => IbuHamil::status()->count(),
                 'statuspermohonansurat'       => [
-                    'Belum Lengkap' => PermohonanSurat::where('status',0)->count(),
-                    'Sedang Diperiksa' => PermohonanSurat::where('status',1)->count(),
-                    'Menunggu Tandatangan' => PermohonanSurat::where('status',2)->count(),
-                    'Siap Diambil' => PermohonanSurat::where('status',3)->count(),
-                    'Sudah Diambil' => PermohonanSurat::where('status',4)->count(),
-                    'Dibatalkan' => PermohonanSurat::where('status',5)->count(),
+                    'belumlengkap' => PermohonanSurat::where('status',0)->count(),
+                    'sedangdiperiksa' => PermohonanSurat::where('status',1)->count(),
+                    'menunggutandatangan' => PermohonanSurat::where('status',2)->count(),
+                    'siapdiambil' => PermohonanSurat::where('status',3)->count(),
+                    'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
+                    'dibatalkan' => PermohonanSurat::where('status',5)->count(),
                 ],
                 'totalpermohonansurat' => PermohonanSurat::count()
             ];
