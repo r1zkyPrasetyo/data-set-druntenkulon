@@ -29,6 +29,8 @@ class DashboardController extends Controller
         try {
             $data = [
                 'penduduk'              => Penduduk::status()->count(),
+                'laki-laki'             => Penduduk::male()->where('status_dasar',1)->count(),
+                'perempuan'             => Penduduk::female()->where('status_dasar',1)->count(),
                 'keluarga'              => twebKeluarga::status()->count(),
                 'rtm'                   => Rtm::status()->count(),
                 'kelompok'              => Kelompok::status()->tipe()->count(),

@@ -359,4 +359,30 @@ class Penduduk extends Model
     {
         return $query->where('status_dasar', $value);
     }
+
+    /**
+     * Scope query untuk jenisKelamin Laki-laki
+     *
+     * @param Builder $query
+     * @param mixed   $value
+     *
+     * @return Builder
+     */
+    public function scopeMale($query, $value = 1)
+    {
+        return $query->where('sex', $value);
+    }
+
+    /**
+     * Scope query untuk jenisKelamin Perempuan
+     *
+     * @param Builder $query
+     * @param mixed   $value
+     *
+     * @return Builder
+     */
+    public function scopeFemale($query, $value = 2)
+    {
+        return $query->where('sex', $value);
+    }
 }
