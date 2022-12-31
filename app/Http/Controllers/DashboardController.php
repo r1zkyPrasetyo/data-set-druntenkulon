@@ -77,4 +77,26 @@ class DashboardController extends Controller
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function logSurat()
+    {
+        try {
+            $logSurat = LogSurat::leftJoin('tweb_surat_format', function ($join) {
+                $join->on('log_surat.id_format_surat', '=', 'tweb_surat_format.id');
+            })->leftJoin('tweb_penduduk', function ($join) {
+                $join->on('log_surat.id_pend', '=', 'tweb_penduduk.id');
+            })
+            ->select(
+                'log_surat.id',
+                'log_surat.keterangan',
+                'tweb_surat_format.nama as jenis_surat',
+                'tweb_penduduk.nama as nama_penduduk',
+                'log_surat.tanggal AS tgl_terdaftar'
+            )
+            ->orderBy('log_surat.tanggal','desc');
+            return DataTables::eloquent($logSurat)->toJson();
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
