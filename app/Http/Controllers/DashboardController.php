@@ -40,7 +40,7 @@ class DashboardController extends Controller
                 'surattercetak'         => LogSurat::count(),
                 'surattercetakharini'   => LogSurat::where('tanggal',Carbon::now())->count(),
                 'ibuhamil'              => IbuHamil::status()->count(),
-                'rekapbukutamu'         => BukuTamu::count() ?  BukuTamu::count() : 0,
+                'rekapbukutamu'         => BukuTamu::count() ?  0 : 0,
                 'statuspermohonansurat'       => [
                     'belumlengkap' => PermohonanSurat::where('status',0)->count(),
                     'sedangdiperiksa' => PermohonanSurat::where('status',1)->count(),
