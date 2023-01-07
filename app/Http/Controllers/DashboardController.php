@@ -28,29 +28,53 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-            $data = [
-                'penduduk'              => Penduduk::status()->count(),
-                'male'                  => Penduduk::male()->where('status_dasar',1)->count(),
-                'female'                => Penduduk::female()->where('status_dasar',1)->count(),
-                'keluarga'              => twebKeluarga::status()->count(),
-                'rtm'                   => Rtm::status()->count(),
-                'kelompok'              => Kelompok::status()->tipe()->count(),
-                'dusun'                 => Wilayah::dusun()->count(),
-                'pendaftaran'           => PendudukMandiri::status()->count(),
-                'surattercetak'         => LogSurat::count(),
-                'surattercetakharini'   => LogSurat::where('tanggal',Carbon::now())->count(),
-                'ibuhamil'              => IbuHamil::status()->count(),
-                'rekapbukutamu'         => config('buku_tamu') ? config('buku_tamu') : 0,
-                'statuspermohonansurat'       => [
-                    'belumlengkap' => PermohonanSurat::where('status',0)->count(),
-                    'sedangdiperiksa' => PermohonanSurat::where('status',1)->count(),
-                    'menunggutandatangan' => PermohonanSurat::where('status',2)->count(),
-                    'siapdiambil' => PermohonanSurat::where('status',3)->count(),
-                    'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
-                    'dibatalkan' => PermohonanSurat::where('status',5)->count(),
-                ],
-                'totalpermohonansurat' => PermohonanSurat::count()
-            ];
+            if (config('status_langganan') == 'premium') {
+                $data = [
+                    'penduduk'              => Penduduk::status()->count(),
+                    'male'                  => Penduduk::male()->where('status_dasar',1)->count(),
+                    'female'                => Penduduk::female()->where('status_dasar',1)->count(),
+                    'keluarga'              => twebKeluarga::status()->count(),
+                    'rtm'                   => Rtm::status()->count(),
+                    'kelompok'              => Kelompok::status()->tipe()->count(),
+                    'dusun'                 => Wilayah::dusun()->count(),
+                    'pendaftaran'           => PendudukMandiri::status()->count(),
+                    'surattercetak'         => LogSurat::count(),
+                    'surattercetakharini'   => LogSurat::where('tanggal',Carbon::now())->count(),
+                    'ibuhamil'              => IbuHamil::status()->count(),
+                    'rekapbukutamu'         => BukuTamu::count(),
+                    'statuspermohonansurat'       => [
+                        'belumlengkap' => PermohonanSurat::where('status',0)->count(),
+                        'sedangdiperiksa' => PermohonanSurat::where('status',1)->count(),
+                        'menunggutandatangan' => PermohonanSurat::where('status',2)->count(),
+                        'siapdiambil' => PermohonanSurat::where('status',3)->count(),
+                        'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
+                        'dibatalkan' => PermohonanSurat::where('status',5)->count(),
+                    ],
+                    'totalpermohonansurat' => PermohonanSurat::count()
+                ];
+            }else{
+                $data = [
+                    'penduduk'              => Penduduk::status()->count(),
+                    'male'                  => Penduduk::male()->where('status_dasar',1)->count(),
+                    'female'                => Penduduk::female()->where('status_dasar',1)->count(),
+                    'keluarga'              => twebKeluarga::status()->count(),
+                    'rtm'                   => Rtm::status()->count(),
+                    'kelompok'              => Kelompok::status()->tipe()->count(),
+                    'dusun'                 => Wilayah::dusun()->count(),
+                    'pendaftaran'           => PendudukMandiri::status()->count(),
+                    'surattercetak'         => LogSurat::count(),
+                    'surattercetakharini'   => LogSurat::where('tanggal',Carbon::now())->count(),
+                    'statuspermohonansurat'       => [
+                        'belumlengkap' => PermohonanSurat::where('status',0)->count(),
+                        'sedangdiperiksa' => PermohonanSurat::where('status',1)->count(),
+                        'menunggutandatangan' => PermohonanSurat::where('status',2)->count(),
+                        'siapdiambil' => PermohonanSurat::where('status',3)->count(),
+                        'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
+                        'dibatalkan' => PermohonanSurat::where('status',5)->count(),
+                    ],
+                    'totalpermohonansurat' => PermohonanSurat::count()
+                ];
+            }
 
             return $this->responseRepository->ResponseSuccess($data, 'List Fetch Successfully !');
         } catch (\Exception $e) {
