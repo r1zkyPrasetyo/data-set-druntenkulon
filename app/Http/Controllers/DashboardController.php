@@ -29,7 +29,7 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-            if (config('status_langganan') == 'premium') {
+            if (env('STATUS_LANGGANAN_OPENSID') == 'premium') {
                 $data = [
                     'penduduk'              => Penduduk::status()->count(),
                     'male'                  => Penduduk::male()->where('status_dasar',1)->count(),
