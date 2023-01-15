@@ -139,7 +139,7 @@ class DashboardController extends Controller
                 $join->on('tweb_desa_pamong.id_pend', '=', 'tweb_penduduk.id');
             })
             ->where('tweb_desa_pamong.jabatan_id','1')
-            ->select('tweb_penduduk.nama','tweb_penduduk.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
+            ->select('tweb_penduduk.nama','tweb_desa_pamong.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
             ->first();
             return $data;
         } catch (\Exception $e) {
