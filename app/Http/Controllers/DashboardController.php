@@ -132,6 +132,17 @@ class DashboardController extends Controller
     public function infoKepalaDesa()
     {
         try {
+            if (env('STATUS_LANGGANAN_OPENSID') == 'premium') {
+                $data = Pamong::status()->leftJoin('ref_jabatan', function ($join) {
+                    $join->on('tweb_desa_pamong.jabatan_id', '=', 'ref_jabatan.id');
+                })
+                ->leftJoin('tweb_penduduk', function ($join) {
+                    $join->on('tweb_desa_pamong.id_pend', '=', 'tweb_penduduk.id');
+                })
+                ->where('tweb_desa_pamong.jabatan_id','1')
+                ->select('tweb_penduduk.nama','tweb_penduduk.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
+                ->first();
+           }else{
             $data = Pamong::status()->leftJoin('ref_jabatan', function ($join) {
                 $join->on('tweb_desa_pamong.jabatan_id', '=', 'ref_jabatan.id');
             })
@@ -139,9 +150,10 @@ class DashboardController extends Controller
                 $join->on('tweb_desa_pamong.id_pend', '=', 'tweb_penduduk.id');
             })
             ->where('tweb_desa_pamong.jabatan_id','1')
-            ->select('tweb_penduduk.nama','tweb_desa_pamong.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
+            ->select('pamong_nama.nama','tweb_desa_pamong.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
             ->first();
-            return $data;
+        }
+        return $data;
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
