@@ -51,7 +51,8 @@ class DashboardController extends Controller
                         'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
                         'dibatalkan' => PermohonanSurat::where('status',5)->count(),
                     ],
-                    'totalpermohonansurat' => PermohonanSurat::count()
+                    'totalpermohonansurat' => PermohonanSurat::count(),
+                    'infokepalaDesa' => $this->infoKepalaDesa()
                 ];
             }else{
                 $data = [
@@ -73,7 +74,8 @@ class DashboardController extends Controller
                         'sudahdiambil' => PermohonanSurat::where('status',4)->count(),
                         'dibatalkan' => PermohonanSurat::where('status',5)->count(),
                     ],
-                    'totalpermohonansurat' => PermohonanSurat::count()
+                    'totalpermohonansurat' => PermohonanSurat::count(),
+                    'infokepalaDesa' => $this->infoKepalaDesa()
                 ];
             }
 
@@ -139,7 +141,7 @@ class DashboardController extends Controller
             ->where('tweb_desa_pamong.jabatan_id','1')
             ->select('tweb_penduduk.nama','tweb_penduduk.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
             ->first();
-            return $this->responseRepository->ResponseSuccess($data, 'List Fetch Successfully !');
+            return $data;
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
