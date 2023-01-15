@@ -24,3 +24,4 @@ Route::get('/info', [ApiController::class, 'info']);
 Route::get('/info-dashboard', [DashboardController::class, 'index']);
 Route::get('/info-daftar-permohonan-surat', [DashboardController::class, 'daftarPermohonanSurat']);
 Route::get('/info-log-surat', [DashboardController::class, 'logSurat']);
+Route::get('/info-data-kepala-desa', [DashboardController::class, 'infoKepalaDesa']);

@@ -8,6 +8,7 @@ use App\Models\BukuTamu;
 use App\Models\IbuHamil;
 use App\Models\Kelompok;
 use App\Models\LogSurat;
+use App\Models\Pamong;
 use App\Models\Penduduk;
 use App\Models\PendudukMandiri;
 use App\Models\PermohonanSurat;
@@ -121,6 +122,24 @@ class DashboardController extends Controller
             )
             ->orderBy('log_surat.tanggal','desc');
             return DataTables::eloquent($logSurat)->toJson();
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function infoKepalaDesa()
+    {
+        try {
+            $data = Pamong::status()->leftJoin('ref_jabatan', function ($join) {
+                $join->on('tweb_desa_pamong.jabatan_id', '=', 'ref_jabatan.id');
+            })
+            ->leftJoin('tweb_penduduk', function ($join) {
+                $join->on('tweb_desa_pamong.id_pend', '=', 'tweb_penduduk.id');
+            })
+            ->where('tweb_desa_pamong.jabatan_id','1')
+            ->select('tweb_penduduk.nama','tweb_penduduk.foto','ref_jabatan.nama as jabatan','tweb_desa_pamong.pamong_masajab','tweb_desa_pamong.gelar_belakang')
+            ->first();
+            return $this->responseRepository->ResponseSuccess($data, 'List Fetch Successfully !');
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
