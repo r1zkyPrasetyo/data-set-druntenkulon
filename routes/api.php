@@ -25,3 +25,5 @@ Route::get('/info-dashboard', [DashboardController::class, 'index']);
 Route::get('/info-daftar-permohonan-surat', [DashboardController::class, 'daftarPermohonanSurat']);
 Route::get('/info-log-surat', [DashboardController::class, 'logSurat']);
 Route::get('/info-data-kepala-desa', [DashboardController::class, 'infoKepalaDesa']);
+Route::get('/analisis/sdgs/{village_code}', [DashboardController::class, 'apiScoreSdgs'])->name('survey.analisis.content.sdgs');
+Route::get('/analisis/detail-score-sdgs/{village_code}/{goals}', [DashboardController::class, 'detailSdgs'])->name('survey.analisis.content.detail.score.sdgs');

@@ -18,6 +18,8 @@ use App\Models\Wilayah;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use DataTables;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Client;
 
 
 class DashboardController extends Controller
@@ -156,6 +158,70 @@ class DashboardController extends Controller
         return $data;
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function apiScoreSdgs($village_code)
+    {
+
+        /** convert code village  3212030010 */
+        if (!is_null($village_code)) {
+            $codeVillage = $village_code;
+        } else {
+            $codeVillage = $village_code;           
+        }
+        try {
+            $client = new Client(); //GuzzleHttp\Client //https://sid.kemendesa.go.id/sdgs/searching/score-sdgs?location_code={$kode_desa}
+            $url =  "https://sid.kemendesa.go.id/sdgs/searching/score-sdgs?location_code=" . $codeVillage;
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'Accept'     => 'application/json',
+                ],
+                'verify'  => false,
+            ]);
+
+            $decodeJson = json_decode($response->getBody());
+            return $decodeJson;
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                if ($e->getResponse()->getStatusCode() == '400') {
+                    return abort(400, 'Maaf Data tidak bisa diambil dari sumber server idm.kemendesa.go.id');
+                }
+            }
+            // You can check for whatever error status code you need 
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(500, 'tidak terhubung dengan server idm.kemendesa.go.id', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function detailSdgs($village_code, $goals)
+    {
+        if (!is_null($village_code)) {
+            $codeVillage = $village_code;
+        } else {
+            $codeVillage = $village_code;           
+        }
+        try {
+            $client = new Client(); //GuzzleHttp\Client //https://sid.kemendesa.go.id/sdgs/searching/detail-score-sdgs?location_code=3212030010&goals=2
+            $url =  "https://sid.kemendesa.go.id/sdgs/searching/detail-score-sdgs?location_code=" . $codeVillage . "&goals=" . $goals;
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'Accept'     => 'application/json',
+                ],
+                'verify'  => false,
+            ]);
+
+            $decodeJson = json_decode($response->getBody());
+            return $decodeJson;
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                if ($e->getResponse()->getStatusCode() == '400') {
+                    return abort(400, 'Maaf Data tidak bisa diambil dari sumber server idm.kemendesa.go.id');
+                }
+            }
+            // You can check for whatever error status code you need 
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(500, 'tidak terhubung dengan server idm.kemendesa.go.id', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
